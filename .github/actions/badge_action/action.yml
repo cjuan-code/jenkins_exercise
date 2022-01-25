@@ -1,0 +1,9 @@
+name: 'modify readme'
+description: 'modify readme from cypress outcome'
+inputs:
+  result:
+    description: 'stores result'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,16 @@
+name: 'send mail'
+description: 'send mail'
+inputs:
+  postmail_secret:
+    required: true
+  linter_result:
+    required: true
+  cypress_result:
+    required: true
+  add_badge_result:
+    required: true
+  deploy_result:
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
