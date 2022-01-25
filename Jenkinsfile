@@ -26,5 +26,11 @@ pipeline {
             }
         }
 
+        stage('test') {
+            steps {
+                sh ' npm run cypress'
+            }
+        }
+
     }
 }
