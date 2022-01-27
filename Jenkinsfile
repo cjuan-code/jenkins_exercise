@@ -16,7 +16,7 @@ pipeline {
 
         stage('Install dependences') {
             steps {
-                sh ' npm install && npm install eslint && npm install cypress'
+                sh ' npm install && npm install eslint'
             }
         }
 
