@@ -17,6 +17,7 @@ pipeline {
         stage('Install dependences') {
             steps {
                 sh ' npm install && npm install eslint'
+                sh ' yarn add cypress'
             }
         }
 
