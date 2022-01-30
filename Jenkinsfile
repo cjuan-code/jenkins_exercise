@@ -9,7 +9,7 @@ pipeline {
     }
     
     triggers {
-        pollSCM('* */3 * * *')
+        pollSCM('H H/3 * * *')
     }
     
     stages {
@@ -37,7 +37,9 @@ pipeline {
         }
 
         stage('Update_Readme') {
-            
+            steps {
+                sh "node ./jenkinsScripts/update_readme/index.js ${env.cypress_test_result}"
+            }
         }
 
     }
