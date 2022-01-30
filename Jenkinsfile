@@ -32,19 +32,18 @@ pipeline {
                 // script {
                 //     env.cypress_test_result = sh(script: "npm run cypress_run_test", returnStdout: true).trim()
                 // }
-                script {
-                    sh ' npm run cypress_run_test'
+                
+                sh ' npm run cypress_run_test'
 
                     // result = readFile('test_result').trim()
 
                     // env.cypress_test_result = result 
-                }
             }
         }
 
         stage('Update_Readme') {
             steps {
-                sh "node ./jenkinsScripts/update_readme/index.js watawa"
+                sh "node ./jenkinsScripts/update_readme/index.js success"
             }
         }
 
