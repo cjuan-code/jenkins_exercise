@@ -42,11 +42,11 @@ pipeline {
             }
         }
 
-        // stage('Update_Readme') {
-        //     steps {
-        //         sh "node ./jenkinsScripts/update_readme/index.js ${env.cypress_test_result}"
-        //     }
-        // }
+        stage('Update_Readme') {
+            steps {
+                sh "node ./jenkinsScripts/update_readme/index.js watawa"
+            }
+        }
 
     }
 }
