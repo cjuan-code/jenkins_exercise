@@ -14,7 +14,7 @@ pipeline {
     
     stages {
 
-        stage('Install dependences') {
+        stage('Install dependences, build app and run app') {
             steps {
                 sh ' npm install && npm install eslint && npm run build && (npm run start&)'
             }
