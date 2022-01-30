@@ -20,16 +20,24 @@ pipeline {
             }
         }
 
-        stage('linter') {
+        stage('Linter') {
             steps {
                 sh ' npm run lint'
             }
         }
 
-        stage('test') {
+        stage('Test') {
             steps {
-                sh ' npm run cypress_run_test'
+
+                script {
+                    env.cypress_test_result = sh(script: "npm run cypress_run_test", returnStdout: true).trim()
+                }
+                // sh ' npm run cypress_run_test'
             }
+        }
+
+        stage('Update_Readme') {
+            
         }
 
     }
