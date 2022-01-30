@@ -6,7 +6,8 @@
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "cypress_run_test": "npx cypress run"
   },
   "dependencies": {
     "cypress": "^9.3.1",
