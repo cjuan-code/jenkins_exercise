@@ -50,7 +50,7 @@ pipeline {
 
         stage('Update_Readme') {
             steps {
-                sh "node ./jenkinsScripts/update_readme/index.js success"
+                sh "node ./jenkinsScripts/update_readme/index.js ${env.TEST}"
             }
         }
 
