@@ -1,5 +1,8 @@
 git config --global user.name "cjuan-code"
 git config --global user.email "cjuaniestacio@gmail.com"
+
+echo $3
+
 git remote set-url origin $3
 
 git add README.md
