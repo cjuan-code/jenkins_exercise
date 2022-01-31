@@ -29,12 +29,16 @@ pipeline {
         stage('Test') {
             steps {
 
+                script {
+                    env.TEST = sh(script: "./node_modules/.bin/cypress run ",returnStatus:true)
+                }
+
                 // script {
                 //     env.cypress_test_result = sh(script: "npm run cypress_run_test", returnStdout: true).trim()
                 // }
                 
                 // script {
-                    sh ' npm run cypress_run_test > test_result'
+                    // sh ' npm run cypress_run_test > test_result'
 
                     // result = readFile('test_result').trim()
 
