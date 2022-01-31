@@ -33,17 +33,17 @@ pipeline {
                 //     env.cypress_test_result = sh(script: "npm run cypress_run_test", returnStdout: true).trim()
                 // }
                 
-                sh ' npm run cypress_run_test'
+                sh ' npm run cypress_run_test > test_result'
 
-                    // result = readFile('test_result').trim()
+                result = readFile('test_result').trim()
 
-                    // env.cypress_test_result = result 
+                env.cypress_test_result = result 
             }
         }
 
         stage('Update_Readme') {
             steps {
-                sh "node ./jenkinsScripts/update_readme/index.js success"
+                sh "node ./jenkinsScripts/update_readme/index.js ${env.cypress_test_result}"
             }
         }
 
