@@ -42,5 +42,14 @@ pipeline {
             }
         }
 
+        stage('Push_Changes') {
+            steps {
+                sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
+                withCredentials([string(credentialsId: 'Repo_gh', variable: 'URL')]) {
+                    sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${URL}"
+                }
+            }
+        }
+
     }
 }
