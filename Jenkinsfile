@@ -33,11 +33,14 @@ pipeline {
                 //     env.cypress_test_result = sh(script: "npm run cypress_run_test", returnStdout: true).trim()
                 // }
                 
-                sh ' npm run cypress_run_test > test_result'
+                script {
+                    sh ' npm run cypress_run_test > test_result'
 
-                result = readFile('test_result').trim()
+                    result = readFile('test_result').trim()
 
-                env.cypress_test_result = result 
+                    env.cypress_test_result = result 
+                }
+
             }
         }
 
