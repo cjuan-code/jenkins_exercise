@@ -52,8 +52,8 @@ pipeline {
 
         stage('Push_Changes') {
             steps {
-                   sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
-                   sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}"
+                sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
+                sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}"
             }
         }
 
@@ -62,7 +62,6 @@ pipeline {
                 sh "chmod +x ./jenkinsScripts/vercel_deploy/vercel_deploy.sh"
                 script {
                     env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} ${env.TEST_RESULT} ${env.UPDATE_RESULT}", returnStatus: true)
-                    // env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} 0 0 0", returnStatus: true)
                 }
             }
         }
