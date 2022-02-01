@@ -26,32 +26,34 @@ pipeline {
 
         stage('Linter') {
             steps {
-                sh ' npm run lint'
+                script {
+                    env.LINTER_RESULT = sh(script: 'npm run lint', returnStatus: true)
+                }
             }
         }
 
         stage('Test') {
             steps {
-
                 script {
-                    env.TEST_RESULT = sh(script: "./node_modules/.bin/cypress run ",returnStatus:true)
+                    env.TEST_RESULT = sh(script: "./node_modules/.bin/cypress run ", returnStatus: true)
                 }
-
             }
         }
 
         stage('Update_Readme') {
             steps {
-                sh "node ./jenkinsScripts/update_readme/index.js ${env.TEST_RESULT}"
+                script {
+                    env.UPDATE_RESULT = sh(script: "node ./jenkinsScripts/update_readme/index.js ${env.TEST_RESULT}", returnStatus: true)
+                }
             }
         }
 
         stage('Push_Changes') {
             steps {
                 sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
-                // withCredentials([string(credentialsId: 'Repo_gh', variable: 'URL')]) {
-                    sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}"
-                // }
+                script {
+                    env.PUSH_RESULT = sh(script: "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}", returnStatus: true)
+                }
             }
         }
 
