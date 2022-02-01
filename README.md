@@ -17,6 +17,8 @@ Primero creamos la tarea de tipo Pipeline en Jenkins
 Ahora toca configurar la pipeline, pondremos la URL al proyecto y la ubicación del archivo Jenkinsfile.
 ![j01](https://user-images.githubusercontent.com/79716922/151997260-72a1b849-9f7d-41b7-b082-43d0e631a3be.png)
 
+### Jenkinsfile
+
 Partiremos de unos parámetros de entrada en jenkins, que son los siguientes:
 ``` 
 parameters {
@@ -25,6 +27,22 @@ parameters {
   string(name: 'correo_notify', description: 'email al que se enviará el correo', defaultValue: 'cjuaniestacio@gmail.com')
 }
 ```
+También consta un cron que se encarga de comprobar cada 3 horas si hay cambios en el repositorio, en caso afirmativo se ejecuta la pipeline.
+```
+triggers {
+  pollSCM('H H/3 * * *')
+}
+```
+Guardaremos en variables de entorno las credenciales necesarias para el correcto funcionamiento de la pipeline.
+```
+environment {
+  REPO_URL = credentials('Repo_gh')
+  VERCEL_TOKEN = credentials('vercel_token')
+  GOOGLE_PASSWORD = credentials('google_password')
+}
+```
+
+
 
 <!---Start place for the badge -->
 RESULTADO DE LOS ÚLTIMOS TESTS [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
