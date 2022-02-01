@@ -41,7 +41,27 @@ environment {
   GOOGLE_PASSWORD = credentials('google_password')
 }
 ```
-
+### Stages
+La primera stage se encarga de instalar las dependencias necesarias, construir y poner en marcha la aplicación de next del proyecto.
+```
+stage('Install dependences, build app and run app') {
+  steps {
+    sh ' npm install && npm install eslint && npm install nodemailer && npm run build && (npm run start&)'
+  }
+}
+```
+La segunda stage se encarga de realizar el eslint al proyecto y guarda el resultado para posteriores comprobaciones.
+```
+stage('Linter') {
+  steps {
+    script {
+      env.LINTER_RESULT = sh(script: 'npm run lint', returnStatus: true)
+    }
+  }
+}
+```
+En caso de que haya algún error de linting nos lo muestra, en caso de que no, nos muestra lo siguiente:
+![no_eslint_errors](https://user-images.githubusercontent.com/79716922/152013654-46c19847-2d0d-41cb-8e97-8c77aec5fbd0.png)
 
 
 <!---Start place for the badge -->
