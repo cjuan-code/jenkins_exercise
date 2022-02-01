@@ -231,3 +231,14 @@ main().catch(console.error);
 Una vez ejecutada la pipeline, al acceder al correo indicado como parámetro, podremos ver el email con los resultados de todos los stages.
 ![mail_result](https://user-images.githubusercontent.com/79716922/152018448-d9f6f4d9-f54c-49a2-8a0d-a4f9b1ae7349.png)
 
+### Instalación y configuración del plugin Dashboard View
+Para la intalación iremos al apartado de plugins y lo buscamos.
+![install_dashboard_view](https://user-images.githubusercontent.com/79716922/152019134-05daf789-dd68-4c2a-9356-497912f2792d.png)
+Una vez instalado, en el Menú principal de Jenkins, crearemos una nueva vista de tipo Dashboard.
+![new_view](https://user-images.githubusercontent.com/79716922/152019674-616f8c1c-8aab-4831-9249-a99fd684a153.png)
+Ahora la configuramos.
+![config](https://user-images.githubusercontent.com/79716922/152019734-b6dde4b9-f689-4246-b55c-c766ff370363.png)
+![config_2](https://user-images.githubusercontent.com/79716922/152019743-88c22a8c-6aa3-45eb-8411-9be4c4616d2a.png)
+![config_3](https://user-images.githubusercontent.com/79716922/152019752-842a9e5d-e942-43fc-b559-20e5cfcbc453.png)
+Y una vez configurada a nuestro gusto, accedemos a ella. En mi caso, se ve de la siguiente forma:
+![dashboard_view](https://user-images.githubusercontent.com/79716922/152019761-aaa3cf82-1c1d-4b3c-bc87-d0431b0f9533.png)
