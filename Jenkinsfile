@@ -33,36 +33,37 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                script {
-                    env.TEST_RESULT = sh(script: "./node_modules/.bin/cypress run ", returnStatus: true)
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         script {
+        //             env.TEST_RESULT = sh(script: "./node_modules/.bin/cypress run ", returnStatus: true)
+        //         }
+        //     }
+        // }
 
-        stage('Update_Readme') {
-            steps {
-                script {
-                    env.UPDATE_RESULT = sh(script: "node ./jenkinsScripts/update_readme/index.js ${env.TEST_RESULT}", returnStatus: true)
-                }
-            }
-        }
+        // stage('Update_Readme') {
+        //     steps {
+        //         script {
+        //             env.UPDATE_RESULT = sh(script: "node ./jenkinsScripts/update_readme/index.js ${env.TEST_RESULT}", returnStatus: true)
+        //         }
+        //     }
+        // }
 
-        stage('Push_Changes') {
-            steps {
-                sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
-                script {
-                    env.PUSH_RESULT = sh(script: "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}", returnStatus: true)
-                }
-            }
-        }
+        // stage('Push_Changes') {
+        //     steps {
+        //         sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
+        //         script {
+        //             env.PUSH_RESULT = sh(script: "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}", returnStatus: true)
+        //         }
+        //     }
+        // }
 
         stage('Deploy_to_Vercel') {
             steps {
                 sh "chmod +x ./jenkinsScripts/vercel_deploy/vercel_deploy.sh"
                 script {
-                    env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} ${env.TEST_RESULT} ${env.UPDATE_RESULT} ${env.PUSH_RESULT}", returnStatus: true)
+                    // env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} ${env.TEST_RESULT} ${env.UPDATE_RESULT} ${env.PUSH_RESULT}", returnStatus: true)
+                    env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} 1 1 1", returnStatus: true)
                 }
             }
         }
