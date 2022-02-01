@@ -14,6 +14,7 @@ pipeline {
 
     environment {
         REPO_URL = credentials('Repo_gh')
+        VERCEL_TOKEN = credentials('vercel_token')
     }
     
     stages {
@@ -53,6 +54,15 @@ pipeline {
                 sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
                 script {
                     env.PUSH_RESULT = sh(script: "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}", returnStatus: true)
+                }
+            }
+        }
+
+        stage('Deploy_to_Vercel') {
+            steps {
+                sh "chmod +x ./jenkinsScripts/vercel_deploy/vercel_deploy.sh"
+                script {
+                    env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} ${env.TEST_RESULT} ${env.UPDATE_RESULT} ${env.PUSH_RESULT}", returnStatus: true)
                 }
             }
         }
