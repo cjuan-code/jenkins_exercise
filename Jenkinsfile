@@ -63,7 +63,7 @@ pipeline {
                 sh "chmod +x ./jenkinsScripts/vercel_deploy/vercel_deploy.sh"
                 script {
                     // env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} ${env.TEST_RESULT} ${env.UPDATE_RESULT} ${env.PUSH_RESULT}", returnStatus: true)
-                    env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} 1 1 1", returnStatus: true)
+                    env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} 0 0 0", returnStatus: true)
                 }
             }
         }
