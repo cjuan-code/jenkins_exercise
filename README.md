@@ -1,5 +1,9 @@
 # Jenkins
 
+<!---Start place for the badge -->
+RESULTADO DE LOS ÚLTIMOS TESTS [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
+<!---End place for the badge -->
+
 ## ¿Qué es Jenkins?
 
 Jenkins es un servidor automatizado de integración continua de código abierto capaz de organizar una cadena de acciones que ayudan a lograr el proceso de integración continua (y mucho más) de manera automatizada.
@@ -81,8 +85,7 @@ Luego, dentro de él, ejecutaremos el siguiente comando:
 ```
 apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 ```
-
-El cuarto stage se encarga de cambiar el README en base al resultado de los tests de cypress.
+El cuarto stage se encarga de cambiar el README en base al resultado de los tests de cypress y se guarda el resultado del cambio.
 ```
 stage('Update_Readme') {
   steps {
@@ -117,8 +120,59 @@ if (result == 0) {
 }
 
 ```
-<!---Start place for the badge -->
-RESULTADO DE LOS ÚLTIMOS TESTS [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
-<!---End place for the badge -->
+Cuando los test fallen la etiqueta del README se ve de la siguiente forma:
+![push_changes_fail](https://user-images.githubusercontent.com/79716922/152015947-e55b8dc2-3e45-49db-bdd3-d23f24249342.png)
+Y en caso de que los tests funcionen correctamente, se ve así:
+![push_changes_success](https://user-images.githubusercontent.com/79716922/152016037-62ba0b06-23a2-4625-927d-b22b27701783.png)
 
+El quinto stage se encarga de subir los cambios al repositorio.
+```
+stage('Push_Changes') {
+  steps {
+    sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
+    sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}"
+  }
+}
+```
+Este es el script que se ejecuta:
+```
+git config --global user.name "cjuan-code"
+git config --global user.email "cjuaniestacio@gmail.com"
+git remote set-url origin $3
 
+git add .
+git commit -m "Pipeline ejecutada por $1. Motivo: $2"
+git push origin HEAD:master
+```
+El sexto y penúltimo stage se encarga de realizar el deploy en Vercel.
+```
+stage('Deploy_to_Vercel') {
+  steps {
+    sh "chmod +x ./jenkinsScripts/vercel_deploy/vercel_deploy.sh"
+    script {
+      env.DEPLOY_RESULT = sh(script: "./jenkinsScripts/vercel_deploy/vercel_deploy.sh ${VERCEL_TOKEN} ${env.LINTER_RESULT} ${env.TEST_RESULT} ${env.UPDATE_RESULT}", returnStatus: true)
+    }
+  }
+}
+```
+
+Para la instalación del CLI de vercel, entraremos de nuevo al contenedor de Jenkins y ejecutaremos el siguiente comando:
+```
+npm install -g vercel
+
+```
+
+Para poder realizar el despliegue hemos de generar un token en vercel.
+![vercel_token](https://user-images.githubusercontent.com/79716922/152017045-efafa206-bc79-4af3-bda3-ac323a1eb7a5.png)
+Y crear la credencial en Jenkins.
+![vercel_token_jenkins_credential](https://user-images.githubusercontent.com/79716922/152017120-66b6dd70-3a42-4926-ac64-d46d23ecd033.png)
+
+El script que se ejecuta es el siguiente, se encarga de mirar si todas los stages anteriores se han ejecutado de forma correcta, en caso de que así sea, se realiza el despliegue.
+```
+if [ $2 -eq 0 ] && [ $3 -eq 0 ] && [ $4 -eq 0 ]; then
+    vercel . --token $1 --confirm --name cjuan-jenkins-exercise
+    exit 0
+else
+    exit 1
+fi
+```
