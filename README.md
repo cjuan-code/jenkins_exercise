@@ -4,6 +4,8 @@
 RESULTADO DE LOS ÚLTIMOS TESTS [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
 <!---End place for the badge -->
 
+Deploy en Vercel: [link](https://cjuan-jenkins-exercise.vercel.app/)
+
 ## ¿Qué es Jenkins?
 
 Jenkins es un servidor automatizado de integración continua de código abierto capaz de organizar una cadena de acciones que ayudan a lograr el proceso de integración continua (y mucho más) de manera automatizada.
