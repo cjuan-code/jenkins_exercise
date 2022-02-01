@@ -63,7 +63,7 @@ stage('Linter') {
 En caso de que haya algún error de linting nos lo muestra, en caso de que no, nos muestra lo siguiente:
 ![no_eslint_errors](https://user-images.githubusercontent.com/79716922/152013654-46c19847-2d0d-41cb-8e97-8c77aec5fbd0.png)
 
-El tercer stage se encarga de realizar los test con cypress.
+El tercer stage se encarga de realizar los test con cypress y guarda el resultado igual que el stage anterior.
 ```
 stage('Test') {
   steps {
@@ -82,12 +82,43 @@ Luego, dentro de él, ejecutaremos el siguiente comando:
 apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 ```
 
+El cuarto stage se encarga de cambiar el README en base al resultado de los tests de cypress.
+```
+stage('Update_Readme') {
+  steps {
+    script {
+      env.UPDATE_RESULT = sh(script: "node ./jenkinsScripts/update_readme/index.js ${env.TEST_RESULT}", returnStatus: true)
+    }
+  }
+}
+```
+Esta es la aplicación que se encarga de realizar los cambios.
+```
+var fs = require('fs');
 
+var result = process.argv[2];
 
+var regex = new RegExp(/<!---Start place for the badge -->\n(.*)\n<!---End place for the badge -->/g);
+    
+if (result == 0) {
+    var file = fs.readFileSync("./README.md", "utf-8");
 
+    var newstr = file.replace(regex, "<!---Start place for the badge -->\n" + "RESULTADO DE LOS ÚLTIMOS TESTS " + "[![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)\n" + "<!---End place for the badge -->")
 
+    fs.writeFileSync("./README.md", newstr);
 
+} else if (result == 1) {
+    var file = fs.readFileSync("./README.md", "utf-8");
 
+    var newstr = file.replace(regex, "<!---Start place for the badge -->\n" + "RESULTADO DE LOS ÚLTIMOS TESTS " + "[![Cypress.io](https://img.shields.io/badge/test-failure-red)](https://www.cypress.io/)\n" + "<!---End place for the badge -->")
+
+    fs.writeFileSync("./README.md", newstr);
+
+}
+
+```
 <!---Start place for the badge -->
 RESULTADO DE LOS ÚLTIMOS TESTS [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
 <!---End place for the badge -->
+
+
