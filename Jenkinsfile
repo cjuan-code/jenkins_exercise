@@ -11,6 +11,10 @@ pipeline {
     triggers {
         pollSCM('H H/3 * * *')
     }
+
+    environment {
+        REPO_URL = credentials('Repo_gh')
+    }
     
     stages {
 
@@ -45,9 +49,9 @@ pipeline {
         stage('Push_Changes') {
             steps {
                 sh "chmod +x ./jenkinsScripts/push_changes/push_changes.sh"
-                withCredentials([string(credentialsId: 'Repo_gh', variable: 'URL')]) {
-                    sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${URL}"
-                }
+                // withCredentials([string(credentialsId: 'Repo_gh', variable: 'URL')]) {
+                    sh "./jenkinsScripts/push_changes/push_changes.sh ${params.ejecutor} ${params.motivo} ${REPO_URL}"
+                // }
             }
         }
 
