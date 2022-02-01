@@ -6,11 +6,11 @@ async function main() {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
 
-  let lint_result = proccess.argv[4] == 0 ? "Resultado correcto" : "Resultado incorrecto"
-  let test_result = proccess.argv[5] == 0 ? "Resultado correcto" : "Resultado incorrecto"
-  let update_result = proccess.argv[6] == 0 ? "Resultado correcto" : "Resultado incorrecto"
-  let deploy_result = proccess.argv[7] == 0 ? "Resultado correcto" : "Resultado incorrecto"
-
+  let lint_result = process.argv[4] == 0 ? "Resultado correcto" : "Resultado incorrecto"
+  let test_result = process.argv[5] == 0 ? "Resultado correcto" : "Resultado incorrecto"
+  let update_result = process.argv[6] == 0 ? "Resultado correcto" : "Resultado incorrecto"
+  let deploy_result = process.argv[7] == 0 ? "Resultado correcto" : "Resultado incorrecto"
+  
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
