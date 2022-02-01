@@ -42,7 +42,7 @@ environment {
 }
 ```
 ### Stages
-La primera stage se encarga de instalar las dependencias necesarias, construir y poner en marcha la aplicación de next del proyecto.
+El primer stage se encarga de instalar las dependencias necesarias, construir y poner en marcha la aplicación de next del proyecto.
 ```
 stage('Install dependences, build app and run app') {
   steps {
@@ -50,7 +50,7 @@ stage('Install dependences, build app and run app') {
   }
 }
 ```
-La segunda stage se encarga de realizar el eslint al proyecto y guarda el resultado para posteriores comprobaciones.
+El segundo stage se encarga de realizar el eslint al proyecto y guarda el resultado para posteriores comprobaciones.
 ```
 stage('Linter') {
   steps {
@@ -62,6 +62,30 @@ stage('Linter') {
 ```
 En caso de que haya algún error de linting nos lo muestra, en caso de que no, nos muestra lo siguiente:
 ![no_eslint_errors](https://user-images.githubusercontent.com/79716922/152013654-46c19847-2d0d-41cb-8e97-8c77aec5fbd0.png)
+
+El tercer stage se encarga de realizar los test con cypress.
+```
+stage('Test') {
+  steps {
+    script {
+      env.TEST_RESULT = sh(script: "./node_modules/.bin/cypress run ", returnStatus: true)
+    }
+  }
+}
+```
+Para la instalación de cypress entraremos dentro del contenedor de Jenkins:
+```
+docker exec -it <id_container> bash
+```
+Luego, dentro de él, ejecutaremos el siguiente comando:
+```
+apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+```
+
+
+
+
+
 
 
 <!---Start place for the badge -->
